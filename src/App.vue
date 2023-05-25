@@ -1,19 +1,16 @@
-<template class="box">
+<template>
   <div>
-    <h1>App root component</h1>
+
   </div>
+
 </template>
-<script setup lang="ts">
-const str = '爱你祖国';
+
+<script setup lang='ts'>
+for(let i = 0; i<100; i++) {
+    console.log(i);
+}
 </script>
 
-<style scoped lang="scss">
-.box {
-  width: 600px;
-  height: 400px;
-  background-color: pink;
-  h1 {
-    color: #ffffff;
-  }
-}
+<style scoped>
+
 </style>
