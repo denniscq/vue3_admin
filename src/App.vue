@@ -1,16 +1,11 @@
 <template>
-  <div>
-
-  </div>
-
+  <div></div>
 </template>
 
-<script setup lang='ts'>
-for(let i = 0; i<100; i++) {
-    console.log(i);
+<script setup lang="ts">
+for (let i = 0; i < 100; i++) {
+  console.log(i)
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
