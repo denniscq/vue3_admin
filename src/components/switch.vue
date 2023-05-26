@@ -1,39 +1,52 @@
 <template>
   <div>
-    <span :style="{color: selected !== '1' ? borderColor : 'grey' }">{{tag[0]}}</span>
+    <span :style="{ color: selected !== '1' ? borderColor : 'grey' }">
+      {{ tag[0] }}
+    </span>
     <div class="d-switch" :class="{ isChecked: selected === '1' }">
-      <input class="d-switch_input" ref="input" type="checkbox" :checked="selected === '1'" @change="handleInput" />
-      <span class="d-switch_action" :style='{ backgroundColor, borderColor }'></span>
+      <input
+        class="d-switch_input"
+        ref="input"
+        type="checkbox"
+        :checked="selected === '1'"
+        @change="handleInput"
+      />
+      <span
+        class="d-switch_action"
+        :style="{ backgroundColor, borderColor }"
+      ></span>
     </div>
-    <span :style="{color: selected === '1' ? borderColor : 'grey' }">{{tag[1]}}</span>
+    <span :style="{ color: selected === '1' ? borderColor : 'grey' }">
+      {{ tag[1] }}
+    </span>
   </div>
 </template>
 
-<script setup lang='ts'>
-import { defineEmits, defineProps, nextTick, ref } from 'vue';
+<script setup lang="ts">
+import { defineEmits, defineProps, nextTick, ref } from 'vue'
 
 const props = defineProps({
   selected: {
     type: String,
   },
   name: {
-    type: String
+    type: String,
   },
   backgroundColor: {
     type: String,
-    default: 'rgba(128, 0, 128, 0.3)'
+    default: 'rgba(128, 0, 128, 0.3)',
   },
   borderColor: {
     type: String,
-    default: 'rgba(128, 0, 128, 0.5)'
+    default: 'rgba(128, 0, 128, 0.5)',
   },
   tag: {
     type: Array,
-    default: ['MY', 'ALL']
-  }
+    default: ['MY', 'ALL'],
+  },
 })
-const $emit = defineEmits(['transmit']);
-const input = ref();
+const $emit = defineEmits(['transmit'])
+const input = ref()
 
 const handleInput = () => {
   nextTick(() => {
@@ -41,10 +54,9 @@ const handleInput = () => {
     $emit('transmit', props.name, value)
   })
 }
-
 </script>
 
-<style scoped lang='scss'>
+<style scoped lang="scss">
 .d-switch {
   position: relative;
   height: 30px;

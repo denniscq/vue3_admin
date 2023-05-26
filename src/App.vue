@@ -6,36 +6,62 @@
     <svg-icon name="mail"></svg-icon>
     <svg-icon name="edit"></svg-icon>
     <svg-icon name="outlook"></svg-icon> -->
-    <div class='top-block margin-top-10'>
-      <select-vue name='selectedProduct' :selected='selectedInfo.selectedProduct' @transmit='handle'></select-vue>
-      <switch-vue name='selectedRoleType' :selected='selectedInfo.selectedRoleType' @transmit='handle'> </switch-vue>
-      <switch-vue name='selectedDateType' :tag='["Month", "Week"]' backgroundColor='lightblue' borderColor='blue'
-        :selected='selectedInfo.selectedDateType' @transmit='handle'></switch-vue>
-      <search-vue name='selectedHCP' :selected='selectedInfo.selectedHCP' @transmit='handle'> </search-vue>
+    <div class="top-block margin-top-10">
+      <select-vue
+        name="selectedProduct"
+        :selected="selectedInfo.selectedProduct"
+        @transmit="handle"
+      ></select-vue>
+      <switch-vue
+        name="selectedRoleType"
+        :selected="selectedInfo.selectedRoleType"
+        @transmit="handle"
+      ></switch-vue>
+      <switch-vue
+        name="selectedDateType"
+        :tag="['Month', 'Week']"
+        backgroundColor="lightblue"
+        borderColor="blue"
+        :selected="selectedInfo.selectedDateType"
+        @transmit="handle"
+      ></switch-vue>
+      <search-vue
+        name="selectedHCP"
+        :selected="selectedInfo.selectedHCP"
+        :HCPs="hcps"
+        @transmit="handle"
+      ></search-vue>
     </div>
-    <div class=' main-block margin-top-10'>
-    </div>
+    <div class="main-block margin-top-10"></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import selectVue from '@/components/select.vue';
-import searchVue from '@/components/search.vue';
-import switchVue from '@/components/switch.vue';
-import { ref } from 'vue';
+import selectVue from '@/components/select.vue'
+import searchVue from '@/components/search.vue'
+import switchVue from '@/components/switch.vue'
+import { ref } from 'vue'
 
 const selectedInfo = ref({
   selectedProduct: '0',
   selectedRoleType: '1',
   selectedDateType: '0',
-  selectedHCP: ''
+  selectedHCP: '',
 })
 
-const handle = (key: 'selectedProduct' | 'selectedRoleType' | 'selectedDateType' | 'selectedHCP', value: string) => {
+const handle = (
+  key:
+    | 'selectedProduct'
+    | 'selectedRoleType'
+    | 'selectedDateType'
+    | 'selectedHCP',
+  value: string,
+) => {
   console.log(`hanle method running, key is ${key}, value is ${value}`)
   selectedInfo.value[key] = value
 }
 
+const hcps = ref(['test1', 'test2', 'test3', 'test4']);
 </script>
 
 <style scoped lang="scss">

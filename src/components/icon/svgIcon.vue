@@ -25,9 +25,9 @@ defineProps({
   },
   background: {
     type: String,
-    default: 'rgba(128, 128, 128, 0.5)'
+    default: 'rgba(128, 128, 128, 0.5)',
   },
 })
 </script>
 
-<style scoped lang='scss'></style>
+<style scoped lang="scss"></style>

@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
         symbolId: 'icon-[dir]-[name]',
       }),
       viteMockServe({ enable: true }),
-      legacy({ targets: ['defaults', 'not IE 11'] })
+      legacy({ targets: ['defaults', 'not IE 11'] }),
     ],
     resolve: {
       alias: {
