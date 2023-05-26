@@ -1,8 +1,18 @@
 import { createApp } from 'vue'
-import App from './App.vue'
+import App from '@/App.vue'
+import 'virtual:svg-icons-register'
+import globalComponent from '@/components'
+import '@/styles/index.scss'
 
-createApp(App).mount('#app')
+const app = createApp(App)
 
-const dennis = () => {
-  console.log('git hook test')
-}
+/**
+ * @deprecated register global svg-icon customized component
+ */
+app.use(globalComponent)
+
+app.mount('#app')
+
+// test mock api
+import axios from 'axios'
+axios.get('/api/hcp')
