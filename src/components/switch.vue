@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, defineProps, nextTick, ref } from 'vue'
+import { nextTick, ref } from 'vue'
 
 const props = defineProps({
   selected: {
@@ -34,11 +34,11 @@ const props = defineProps({
   },
   backgroundColor: {
     type: String,
-    default: 'rgba(128, 0, 128, 0.3)',
+    default: '#DDA0DD',
   },
   borderColor: {
     type: String,
-    default: 'rgba(128, 0, 128, 0.5)',
+    default: '#DA70D6',
   },
   tag: {
     type: Array,

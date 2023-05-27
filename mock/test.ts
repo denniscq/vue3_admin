@@ -1,12 +1,7 @@
 /**
  * @deprecated mock data
  */
-const data = [
-  { id: 1, name: 'test1' },
-  { id: 2, name: 'test2' },
-  { id: 3, name: 'test3' },
-  { id: 4, name: 'test4' },
-]
+import { init_mockData } from '../src/models/hcp_model'
 
 export default function (config) {
   return [
@@ -14,6 +9,7 @@ export default function (config) {
       url: '/api/hcp',
       method: 'get',
       response: ({ query }) => {
+        const data = init_mockData();
         if (!!query && !!query.name) {
           const { name } = query
           return {
@@ -21,7 +17,7 @@ export default function (config) {
             data: data.filter((item) => item.name.indexOf(name) > -1),
           }
         }
-        return { code: 200, data: data }
+        return { code: 200, data }
       },
     },
   ]

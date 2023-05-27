@@ -12,7 +12,3 @@ const app = createApp(App)
 app.use(globalComponent)
 
 app.mount('#app')
-
-// test mock api
-// import axios from 'axios'
-// axios.get('/api/hcp')

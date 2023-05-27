@@ -28,8 +28,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
-
 const props = defineProps(['selected', 'name'])
 const $emit = defineEmits(['transmit'])
 const select = (value: string) => {
