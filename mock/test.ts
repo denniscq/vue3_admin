@@ -9,7 +9,7 @@ export default function (config) {
       url: '/api/hcp',
       method: 'get',
       response: ({ query }) => {
-        const data = init_mockData();
+        const data = init_mockData()
         if (!!query && !!query.name) {
           const { name } = query
           return {

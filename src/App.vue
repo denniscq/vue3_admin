@@ -1,67 +1,130 @@
 <template>
   <div>
     <div class="top-block margin-top-10">
-      <select-vue name="selectedProduct" :selected="selectedInfo.selectedProduct" @transmit="handle"></select-vue>
-      <switch-vue name="selectedRoleType" :selected="selectedInfo.selectedRoleType" @transmit="handle"></switch-vue>
-      <switch-vue name="selectedDateType" :tag="['Month', 'Week']" backgroundColor="lightblue" borderColor="blue"
-        :selected="selectedInfo.selectedDateType" @transmit="handle"></switch-vue>
-      <search-vue name="selectedHCP" :selected="selectedInfo.selectedHCP" :HCPs="hcps" @transmit="handle"></search-vue>
+      <select-vue
+        name="selectedProduct"
+        :selected="selectedInfo.selectedProduct"
+        @transmit="handle"
+      ></select-vue>
+      <switch-vue
+        name="selectedRoleType"
+        :selected="selectedInfo.selectedRoleType"
+        @transmit="handle"
+      ></switch-vue>
+      <switch-vue
+        name="selectedDateType"
+        :tag="['Month', 'Week']"
+        backgroundColor="lightblue"
+        borderColor="blue"
+        :selected="selectedInfo.selectedDateType"
+        @transmit="handle"
+      ></switch-vue>
+      <search-vue
+        name="selectedHCP"
+        :selected="selectedInfo.selectedHCP"
+        :HCPs="hcps"
+        @transmit="handle"
+      ></search-vue>
     </div>
     <div class="table-block margin-top-10">
       <table>
-        <tr class='tr-title'>
+        <tr class="tr-title">
           <td>HCP List</td>
           <td>Confirmed schedule</td>
           <td>ACE Recommended Frequency</td>
         </tr>
-        <tr class='tr-subtitle'>
+        <tr class="tr-subtitle">
           <td>
-            <div class='td-flex'>
+            <div class="td-flex">
               <!-- <div style='width:160px;'> -->
               ACE Prioritization
               <!-- </div> -->
-              <div class='up-logo' @click='handleHCPOrder(isUp)'>
-                <svg-icon name="down" color='blue' background='transparent' width='16px' height='16px'
-                  v-if='isUp'></svg-icon>
-                <svg-icon name="up" color='blue' background='transparent' width='16px' height='16px' v-else></svg-icon>
+              <div class="up-logo" @click="handleHCPOrder(isUp)">
+                <svg-icon
+                  name="down"
+                  color="blue"
+                  background="transparent"
+                  width="16px"
+                  height="16px"
+                  v-if="isUp"
+                ></svg-icon>
+                <svg-icon
+                  name="up"
+                  color="blue"
+                  background="transparent"
+                  width="16px"
+                  height="16px"
+                  v-else
+                ></svg-icon>
               </div>
             </div>
           </td>
           <td>
-            <div class='td-flex'>
-              <div class='left-logo' @click='goPrevious(monthDisplay)'>
-                <svg-icon name="left" color='blue' background='transparent' width='16px' height='16px'></svg-icon>
+            <div class="td-flex">
+              <div class="left-logo" @click="goPrevious(monthDisplay)">
+                <svg-icon
+                  name="left"
+                  color="blue"
+                  background="transparent"
+                  width="16px"
+                  height="16px"
+                ></svg-icon>
               </div>
               {{ monthDisplay }}
-              <div class='right-logo' @click='goNext(monthDisplay)'>
-                <svg-icon name="right" color='blue' background='transparent' width='16px' height='16px'></svg-icon>
+              <div class="right-logo" @click="goNext(monthDisplay)">
+                <svg-icon
+                  name="right"
+                  color="blue"
+                  background="transparent"
+                  width="16px"
+                  height="16px"
+                ></svg-icon>
               </div>
             </div>
           </td>
           <td>
-            <div class='td-flex'>
-              <div class='left-logo' @click='goPrevious(monthDisplay)'>
-                <svg-icon name="left" color='blue' background='transparent' width='16px' height='16px'></svg-icon>
+            <div class="td-flex">
+              <div class="left-logo" @click="goPrevious(monthDisplay)">
+                <svg-icon
+                  name="left"
+                  color="blue"
+                  background="transparent"
+                  width="16px"
+                  height="16px"
+                ></svg-icon>
               </div>
               {{ monthDisplay }}
-              <div class='right-logo' @click='goNext(monthDisplay)'>
-                <svg-icon name="right" color='blue' background='transparent' width='16px' height='16px'></svg-icon>
+              <div class="right-logo" @click="goNext(monthDisplay)">
+                <svg-icon
+                  name="right"
+                  color="blue"
+                  background="transparent"
+                  width="16px"
+                  height="16px"
+                ></svg-icon>
               </div>
             </div>
           </td>
         </tr>
-        <tr class='tr-celltitle'>
+        <tr class="tr-celltitle">
           <td></td>
           <td>
-            <div class='schedule-block'>
-              <span v-if='selectedInfo.selectedDateType === "0"' v-for='unit in scheduleUnits' class='schedule-unit'
-                :style="{ width: scheduleUnit_width }"> Week
-                {{ unit }}</span>
-              <span v-else v-for='unit in scheduleUnits' class='schedule-unit'> Day {{ unit }}</span>
+            <div class="schedule-block">
+              <span
+                v-if="selectedInfo.selectedDateType === '0'"
+                v-for="unit in scheduleUnits"
+                class="schedule-unit"
+                :style="{ width: scheduleUnit_width }"
+              >
+                Week {{ unit }}
+              </span>
+              <span v-else v-for="unit in scheduleUnits" class="schedule-unit">
+                Day {{ unit }}
+              </span>
             </div>
           </td>
           <td>
-            <div class='logo-block'>
+            <div class="logo-block">
               <span></span>
               <span><svg-icon name="people"></svg-icon></span>
               <span><svg-icon name="computer"></svg-icon></span>
@@ -72,17 +135,27 @@
             </div>
           </td>
         </tr>
-        <tr class='tr-row' v-for='(item, index) in data' :key='index'>
+        <tr class="tr-row" v-for="(item, index) in data" :key="index">
           <td>
-            <p class='ace'>ACE {{ item.priority }}</p>
-            <p class='hcp'>{{ item.name }}</p>
+            <p class="ace">ACE {{ item.priority }}</p>
+            <p class="hcp">{{ item.name }}</p>
             <p>{{ item.hospitalName }}</p>
           </td>
           <td>
-            <sechdule-vue :data='item.scheduleList' :periodStart='periodStart' :periodEnd='periodEnd' :scheduleUnits='scheduleUnits' :scheduleUnit_width='scheduleUnit_width'></sechdule-vue>
+            <sechdule-vue
+              :data="item.scheduleList"
+              :periodStart="periodStart"
+              :periodEnd="periodEnd"
+              :scheduleUnits="scheduleUnits"
+              :scheduleUnit_width="scheduleUnit_width"
+            ></sechdule-vue>
           </td>
           <td>
-            <visual-vue :data='item.scheduleList' :periodStart='periodStart' :periodEnd='periodEnd'></visual-vue>
+            <visual-vue
+              :data="item.scheduleList"
+              :periodStart="periodStart"
+              :periodEnd="periodEnd"
+            ></visual-vue>
           </td>
         </tr>
       </table>
@@ -109,7 +182,7 @@ const selectedInfo = ref({
   selectedDateType: '0',
   selectedHCP: '',
 })
-const periodStart = ref(0);
+const periodStart = ref(0)
 const periodEnd = ref(0)
 
 const handle = (
@@ -126,9 +199,17 @@ const handle = (
     const date = new Date().getDate()
     const today = new Date().getDay()
     if (date >= today) {
-      periodStart.value = new Date(new Date().getFullYear(), new Date().getMonth() - 1, date - today).getTime()
+      periodStart.value = new Date(
+        new Date().getFullYear(),
+        new Date().getMonth() - 1,
+        date - today,
+      ).getTime()
     } else {
-      const monthStart = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1).getTime()
+      const monthStart = new Date(
+        new Date().getFullYear(),
+        new Date().getMonth() - 1,
+        1,
+      ).getTime()
       periodStart.value = monthStart - (today - date) * 24 * 60 * 60 * 60
     }
     periodEnd.value = periodStart.value + 7 * 24 * 60 * 60 * 60
@@ -137,12 +218,24 @@ const handle = (
 
 const hcps = ref(['test1', 'test2', 'test3', 'test4'])
 
-
 /**
  * @description main table logic
  */
 const data: Ref<hcp[]> = ref([])
-const month_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Aguest', 'September', 'October', 'November', 'December']
+const month_EN = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'Aguest',
+  'September',
+  'October',
+  'November',
+  'December',
+]
 const monthDisplay = ref('')
 const weekDisplay = ref('')
 const isUp = ref(true)
@@ -165,8 +258,8 @@ const goPrevious = (value) => {
     // 获取这个一个月的数据
   }
 
-  const index = month_EN.findIndex(p => p === month.split(''))
-  const realDate = new Date(year, index - 1, 1);
+  const index = month_EN.findIndex((p) => p === month.split(''))
+  const realDate = new Date(year, index - 1, 1)
 }
 
 const goNext = (value) => {
@@ -179,13 +272,13 @@ const goNext = (value) => {
     // 获取这个一个月的数据
   }
 
-  const index = month_EN.findIndex(p => p === month.split(''))
-  const realDate = new Date(year, index + 1, 1);
+  const index = month_EN.findIndex((p) => p === month.split(''))
+  const realDate = new Date(year, index + 1, 1)
 }
 
 onMounted(() => {
-  const month = new Date().getMonth();
-  const year = new Date().getFullYear();
+  const month = new Date().getMonth()
+  const year = new Date().getFullYear()
   monthDisplay.value = `${month_EN[month]} ${year}`
 
   periodStart.value = new Date(year, month, 1).getTime()
@@ -205,7 +298,6 @@ onBeforeMount(async () => {
     data.value = result
   }
 })
-
 </script>
 
 <style scoped lang="scss">
@@ -235,14 +327,14 @@ onBeforeMount(async () => {
   margin-left: 2%;
   // height: 600px;
 
-  &>table {
+  & > table {
     width: 100%;
     border-collapse: collapse;
     color: grey;
     font-size: 12px;
 
-    &>tr {
-      &>td {
+    & > tr {
+      & > td {
         border-right: 2px solid $disable-background-color;
         border-bottom: 2px solid $disable-background-color;
 
@@ -256,38 +348,38 @@ onBeforeMount(async () => {
       }
     }
 
-    &>.tr-title {
+    & > .tr-title {
       color: black;
       font-size: 18px;
       line-height: 40px;
       text-align: center;
     }
 
-    &>.tr-subtitle {
+    & > .tr-subtitle {
       color: blue;
       font-size: 14px;
       line-height: 30px;
       background-color: $normal-background-color;
       text-align: center;
 
-      &>td {
+      & > td {
         position: relative;
         border-bottom: 0px;
 
-        &>.td-flex {
+        & > .td-flex {
           display: flex;
           width: 100%;
           height: 100%;
           justify-content: center;
 
-          &>.up-logo {
+          & > .up-logo {
             right: 15px;
             top: 3px;
             cursor: pointer;
             position: absolute;
           }
 
-          &>.left-logo {
+          & > .left-logo {
             left: 30%;
             top: 3px;
             cursor: pointer;
@@ -295,7 +387,7 @@ onBeforeMount(async () => {
             // background-color: yellow;
           }
 
-          &>.right-logo {
+          & > .right-logo {
             right: 30%;
             top: 3px;
             cursor: pointer;
@@ -306,22 +398,22 @@ onBeforeMount(async () => {
       }
     }
 
-    &>.tr-celltitle {
+    & > .tr-celltitle {
       line-height: 40px;
       text-align: center;
       font-size: 12px;
 
-      &>td {
+      & > td {
         border-bottom: 0 !important;
         position: relative;
 
-        &>.logo-block {
+        & > .logo-block {
           position: absolute;
           width: 100%;
           height: 100%;
           display: flex;
 
-          &>span {
+          & > span {
             width: 40px;
             height: 100%;
             height: 100%;
@@ -330,7 +422,7 @@ onBeforeMount(async () => {
           }
         }
 
-        &>.schedule-block {
+        & > .schedule-block {
           display: flex;
           justify-content: space-between;
 
@@ -345,12 +437,12 @@ onBeforeMount(async () => {
       }
     }
 
-    &>.tr-row {
-      &>td {
+    & > .tr-row {
+      & > td {
         position: relative;
       }
 
-      &>td:first-child {
+      & > td:first-child {
         padding: 20px 10px;
         line-height: 25px;
 
@@ -366,7 +458,6 @@ onBeforeMount(async () => {
           font-size: 16px;
           color: blue;
         }
-
       }
     }
   }
