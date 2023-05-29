@@ -44,8 +44,9 @@ export const calculatePeriodForWeek = (inputDate?: number): periodImp => {
   const periodEndDateTime = new Date(result.periodEnd)
   const accurateMonth = periodEndDateTime.getMonth()
   const accurateDate = periodEndDateTime.getDate()
-  result.displayValue = `No.${Math.ceil(accurateDate / 7)} Week ${MONTH_TRANS[accurateMonth]
-    } `
+  result.displayValue = `No.${Math.ceil(accurateDate / 7)} Week ${
+    MONTH_TRANS[accurateMonth]
+  } `
   result.scheduleUnits = WEEK_TRANS
 
   return result

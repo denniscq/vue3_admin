@@ -2,7 +2,7 @@
 
 node version is the lasted one 18.16.0, and execute below two command.
 
-npm install
+npm install  
 npm run dev
 
 # How to build package
@@ -10,4 +10,5 @@ npm run dev
 npm run build:prod
 
 # Screenshot
-![image](home_page.png)
+
+![image](https://github.com/denniscq/vue3_admin/blob/master/home_page.png)
