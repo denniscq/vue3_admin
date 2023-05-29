@@ -1,10 +1,30 @@
 <template>
   <div class="schedule-block">
-    <div class="schedule-unit" v-for=" in scheduleUnits" :style="{ width: scheduleUnit_width }"></div>
-    <svg-icon class="schedule_svg" v-for="(scheduleItem) in scheduleList" :key="scheduleItem.id" :name="scheduleItem.name"
-      :style="{ left: scheduleItem.leftRate }" width="18px" height="18px" :background="scheduleItem.color"></svg-icon>
-    <svg-icon class="confirm_svg" v-for="(scheduleItem, index) in confirmList" :key="index" :name="scheduleItem.name"
-      :style="{ left: scheduleItem.leftRate }" width="18px" height="18px" :background="scheduleItem.color"></svg-icon>
+    <div
+      class="schedule-unit"
+      v-for=" in scheduleUnits"
+      :style="{ width: scheduleUnit_width }"
+    ></div>
+    <svg-icon
+      class="schedule_svg"
+      v-for="scheduleItem in scheduleList"
+      :key="scheduleItem.id"
+      :name="scheduleItem.name"
+      :style="{ left: scheduleItem.leftRate }"
+      width="18px"
+      height="18px"
+      :background="scheduleItem.color"
+    ></svg-icon>
+    <svg-icon
+      class="confirm_svg"
+      v-for="(scheduleItem, index) in confirmList"
+      :key="index"
+      :name="scheduleItem.name"
+      :style="{ left: scheduleItem.leftRate }"
+      width="18px"
+      height="18px"
+      :background="scheduleItem.color"
+    ></svg-icon>
   </div>
 </template>
 
@@ -96,7 +116,7 @@ initData(props.data as schedule[])
   display: flex;
   justify-content: space-between;
 
-  &>.schedule-unit {
+  & > .schedule-unit {
     height: 100%;
     border-right: $disable-background-color solid 1px;
     display: flex;
@@ -107,19 +127,19 @@ initData(props.data as schedule[])
       border-right: 0px;
     }
 
-    &>div {
+    & > div {
       width: 100%px;
       height: 40px;
       position: relative;
     }
   }
 
-  &>.schedule_svg {
+  & > .schedule_svg {
     position: absolute;
     top: 50px;
   }
 
-  &>.confirm_svg {
+  & > .confirm_svg {
     position: absolute;
     top: 80px;
   }

@@ -6,7 +6,7 @@ const data_cache: Array<hcp> = []
 
 /**
  * @description get all
- * @returns 
+ * @returns
  */
 const getAll = async (): Promise<hcp[]> => {
   if (data_cache && data_cache.length) {
@@ -33,14 +33,16 @@ const getAll = async (): Promise<hcp[]> => {
 
 /**
  * @description get by condition name
- * @param name 
- * @returns 
+ * @param name
+ * @returns
  */
 const getByName = async (name: string, originalData: hcp[]): Promise<hcp[]> => {
   try {
-    debugger;
+    debugger
     const hcps = originalData.length ? originalData : await getAll()
-    const data = hcps.filter((p) => p.name.toLowerCase().indexOf(name.toLowerCase()) > -1)
+    const data = hcps.filter(
+      (p) => p.name.toLowerCase().indexOf(name.toLowerCase()) > -1,
+    )
 
     return data
   } catch (error) {
@@ -54,14 +56,17 @@ const getByName = async (name: string, originalData: hcp[]): Promise<hcp[]> => {
 
 /**
  * @description get by condition medical
- * @param medical 
- * @returns 
+ * @param medical
+ * @returns
  */
-const getByProduct = async (medical: string, originalData: hcp[]): Promise<hcp[]> => {
+const getByProduct = async (
+  medical: string,
+  originalData: hcp[],
+): Promise<hcp[]> => {
   try {
     const hcps = originalData.length ? originalData : await getAll()
     if (medical === '0') {
-      return Promise.resolve(hcps);
+      return Promise.resolve(hcps)
     }
     const data = hcps.filter((p) => p.medical === medical)
 
@@ -77,15 +82,15 @@ const getByProduct = async (medical: string, originalData: hcp[]): Promise<hcp[]
 
 /**
  * @description get by condition medical
- * @param medical 
- * @returns 
+ * @param medical
+ * @returns
  */
 const getByRole = async (role: string, originalData: hcp[]): Promise<hcp[]> => {
   try {
     const hcps = originalData.length ? originalData : await getAll()
 
     const data: hcp[] = []
-    hcps.forEach(hcp => {
+    hcps.forEach((hcp) => {
       let item: any = {}
       item.id = hcp.id
       item.hospitalName = hcp.hospitalName
@@ -117,20 +122,26 @@ const getByRole = async (role: string, originalData: hcp[]): Promise<hcp[]> => {
 
 /**
  * @description get by date
- * @param medical 
- * @returns 
+ * @param medical
+ * @returns
  */
-const getByDate = async (periodStart: number, periodEnd: number, originalData: hcp[]): Promise<hcp[]> => {
+const getByDate = async (
+  periodStart: number,
+  periodEnd: number,
+  originalData: hcp[],
+): Promise<hcp[]> => {
   try {
     const hcps = originalData.length ? originalData : await getAll()
 
     const data: hcp[] = []
-    hcps.forEach(hcp => {
-      hcp.scheduleList = hcp.scheduleList.filter(p => {
+    hcps.forEach((hcp) => {
+      hcp.scheduleList = hcp.scheduleList.filter((p) => {
         const scheduleTimeStamp = new Date(p.scheduleTime).getTime()
         const confirmedTimeStamp = new Date(p.confirmedTime).getTime()
-        return ((periodStart < scheduleTimeStamp) && (scheduleTimeStamp < periodEnd)) ||
-          ((periodStart < confirmedTimeStamp) && (confirmedTimeStamp < periodEnd))
+        return (
+          (periodStart < scheduleTimeStamp && scheduleTimeStamp < periodEnd) ||
+          (periodStart < confirmedTimeStamp && confirmedTimeStamp < periodEnd)
+        )
       })
       data.push(JSON.parse(JSON.stringify(hcp)))
     })
@@ -147,10 +158,12 @@ const getByDate = async (periodStart: number, periodEnd: number, originalData: h
 
 /**
  * @description get by customize condition
- * @param medical 
- * @returns 
+ * @param medical
+ * @returns
  */
-const getByPredicate = async (callback: (hcp: any) => boolean): Promise<hcp[]> => {
+const getByPredicate = async (
+  callback: (hcp: any) => boolean,
+): Promise<hcp[]> => {
   try {
     const hcps = await getAll()
     const data = hcps.filter(callback)
@@ -166,41 +179,45 @@ const getByPredicate = async (callback: (hcp: any) => boolean): Promise<hcp[]> =
 }
 
 /**
- * 
- * @param condition 
+ *
+ * @param condition
  */
-const filter = async (condition: any, periodStart: number, periodEnd: number): Promise<hcp[]> => {
+const filter = async (
+  condition: any,
+  periodStart: number,
+  periodEnd: number,
+): Promise<hcp[]> => {
   let originalData: hcp[] = []
-  debugger;
+  debugger
   for (const key of Object.keys(condition)) {
     switch (key) {
       case 'selectedDateType': {
         originalData = await getByDate(periodStart, periodEnd, originalData)
-        break;
+        break
       }
       case 'selectedProduct': {
         originalData = await getByProduct(condition[key], originalData)
         console.log('production')
-        break;
+        break
       }
       case 'selectedRoleType': {
         originalData = await getByRole(condition[key], originalData)
         console.log('role')
-        break;
+        break
       }
       case 'selectedHCP': {
         if (condition[key]) {
           originalData = await getByName(condition[key], originalData)
         }
-        break;
+        break
       }
-      default: break;
+      default:
+        break
     }
   }
 
   return originalData
 }
-
 
 export default {
   getAll,
@@ -208,5 +225,5 @@ export default {
   getByProduct,
   getByPredicate,
   getByRole,
-  filter
+  filter,
 }
