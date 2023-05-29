@@ -501,7 +501,7 @@ watch(data, (newValue) => {
       border-bottom: 5px dashed transparent;
 
       position: absolute;
-      right: -5.5px;
+      right: -5px;
     }
   }
 }

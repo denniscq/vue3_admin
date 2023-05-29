@@ -1,3 +1,0 @@
-pnpm add sass sass-loader stylelint postcss postcss-scss postcss-html stylelint-config-prettier
-stylelint-config-recess-order stylelint-config-recommended-scss stylelint-config-standard
-stylelint-config-standard-vue stylelint-scss stylelint-order stylelint-config-strandard-scss -D

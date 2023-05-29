@@ -36,7 +36,7 @@ const inputSearch = ref({ value: '' })
 const validHPCs = ref(new Array())
 const isShow = ref(false)
 
-let timer: number
+let timer: any
 const handleInput = () => {
   if (timer) {
     clearTimeout(timer)

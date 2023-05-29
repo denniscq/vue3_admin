@@ -134,7 +134,7 @@ const getByRole = async (role: string, originalData: hcp[]): Promise<hcp[]> => {
 
     const data: hcp[] = []
     hcps.forEach((hcp) => {
-      let item: any = {}
+      const item: any = {}
       item.id = hcp.id
       item.hospitalName = hcp.hospitalName
       item.medical = hcp.medical
@@ -174,7 +174,7 @@ const filterByRole = (role: string, originalData: hcp[]): hcp[] => {
 
     const data: hcp[] = []
     hcps.forEach((hcp) => {
-      let item: any = {}
+      const item: any = {}
       item.id = hcp.id
       item.hospitalName = hcp.hospitalName
       item.medical = hcp.medical

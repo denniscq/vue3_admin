@@ -44,9 +44,8 @@ export const calculatePeriodForWeek = (inputDate?: number): periodImp => {
   const periodEndDateTime = new Date(result.periodEnd)
   const accurateMonth = periodEndDateTime.getMonth()
   const accurateDate = periodEndDateTime.getDate()
-  result.displayValue = `No.${Math.ceil(accurateDate / 7)} Week ${
-    MONTH_TRANS[accurateMonth]
-  } `
+  result.displayValue = `No.${Math.ceil(accurateDate / 7)} Week ${MONTH_TRANS[accurateMonth]
+    } `
   result.scheduleUnits = WEEK_TRANS
 
   return result
@@ -87,7 +86,7 @@ export const calculatePeriodForMonth = (inputDate?: number): periodImp => {
  */
 export const switchWeekOrMonth = (
   modelFlag: string,
-  callback: Function,
+  callback: (reuslt: any) => void,
   inputDate?: number,
 ) => {
   const result =
@@ -116,7 +115,7 @@ export const positiveOrder = (dataSource: hcp[]): hcp[] => {
           const char1 = dataSource[j].name[index]
           const char2 = dataSource[j + 1].name[index]
           if (char1 != char2) {
-            let isToUp = char1 && !char2
+            const isToUp = char1 && !char2
 
             if (isToUp || (char1 && char2 && char1 > char2)) {
               const tempObj = dataSource[j + 1]
@@ -155,7 +154,7 @@ export const negativeOrder = (dataSource: hcp[]): hcp[] => {
           const char1 = dataSource[j].name[index]
           const char2 = dataSource[j + 1].name[index]
           if (char1 != char2) {
-            let isToDown = !char1 && char2
+            const isToDown = !char1 && char2
 
             if (isToDown || (char1 && char2 && char1 < char2)) {
               const tempObj = dataSource[j + 1]
