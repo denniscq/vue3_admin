@@ -1,9 +1,9 @@
 <template>
-  <div style='z-index: 2;' @mouseover='overEvent' @mouseout='outEvent'>
+  <div style="z-index: 2" @mouseover="overEvent" @mouseout="outEvent">
     <svg :style="{ width, height, background }">
       <use :xlink:href="prefix + name" :fill="color"></use>
     </svg>
-    <span v-show='isShow && toolTip' class='toolTip'>{{ toolTip }}</span>
+    <span v-show="isShow && toolTip" class="toolTip">{{ toolTip }}</span>
   </div>
 </template>
 
@@ -34,8 +34,8 @@ defineProps({
   },
   toolTip: {
     type: String,
-    default: ''
-  }
+    default: '',
+  },
 })
 
 /**

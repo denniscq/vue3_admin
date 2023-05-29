@@ -105,10 +105,7 @@ const getByProduct = async (
  * @param medical
  * @returns
  */
-const filterByProduct = (
-  medical: string,
-  originalData: hcp[],
-): hcp[] => {
+const filterByProduct = (medical: string, originalData: hcp[]): hcp[] => {
   try {
     const hcps = originalData
     if (medical === '0') {

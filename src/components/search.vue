@@ -1,16 +1,22 @@
 <template>
   <div class="search-block">
-    <svg style="width: 40px;
-                                height: 40px;
-                                position: absolute;
-                                top: -5px;
-                            ">
-      <use xlink:href="#icon-search" fill='blue'></use>
+    <svg style="width: 40px; height: 40px; position: absolute; top: -5px">
+      <use xlink:href="#icon-search" fill="blue"></use>
     </svg>
-    <input placeholder="Search HCP / HCO" :value="selected" @input="handleInput" @focus="
-      () => isShow = validHPCs.length > 0" @change="changeEvent" ref="inputSearch" />
+    <input
+      placeholder="Search HCP / HCO"
+      :value="selected"
+      @input="handleInput"
+      @focus="() => (isShow = validHPCs.length > 0)"
+      @change="changeEvent"
+      ref="inputSearch"
+    />
     <div v-show="isShow">
-      <p v-for="(item, index) in validHPCs" :key="index" @click="handleClick(item)">
+      <p
+        v-for="(item, index) in validHPCs"
+        :key="index"
+        @click="handleClick(item)"
+      >
         {{ item }}
       </p>
     </div>
@@ -38,7 +44,11 @@ const handleInput = () => {
   timer = setTimeout(() => {
     if (props.HCPs) {
       validHPCs.value = inputSearch.value.value
-        ? props.HCPs.filter((p) => p.toLowerCase().indexOf(inputSearch.value.value.toLowerCase()) > -1)
+        ? props.HCPs.filter(
+            (p) =>
+              p.toLowerCase().indexOf(inputSearch.value.value.toLowerCase()) >
+              -1,
+          )
         : []
       isShow.value = validHPCs.value.length > 0
       $emit('transmit', props.name, inputSearch.value.value)
@@ -76,14 +86,14 @@ onMounted(() => {
   border-width: 0 0 1px 0;
   border-style: solid;
 
-  &>input {
+  & > input {
     border-width: 0;
     width: 330px;
     margin-left: 30px;
     line-height: 30px;
   }
 
-  &>div {
+  & > div {
     position: absolute;
     background-color: #ffffff;
     width: 100%;
@@ -91,7 +101,7 @@ onMounted(() => {
     z-index: 1;
     border-radius: 5px;
 
-    &>p {
+    & > p {
       width: 100%;
       line-height: 30px;
       padding-left: 10px;

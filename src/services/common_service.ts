@@ -32,13 +32,10 @@ export const calculatePeriodForWeek = (inputDate?: number): periodImp => {
   const year = basicDate.getFullYear()
   if (date >= dayInWeek) {
     result.periodStart =
-      new Date(
-        year,
-        month,
-        date - dayInWeek,
-      ).getTime() + ONEDAY_TIMESTAMP
+      new Date(year, month, date - dayInWeek).getTime() + ONEDAY_TIMESTAMP
   } else {
-    const lastMonthEndtime = new Date(year, basicDate.getMonth(), 0).getTime() + ONEDAY_TIMESTAMP
+    const lastMonthEndtime =
+      new Date(year, basicDate.getMonth(), 0).getTime() + ONEDAY_TIMESTAMP
     result.periodStart =
       lastMonthEndtime - (dayInWeek - date) * ONEDAY_TIMESTAMP
   }
@@ -47,7 +44,9 @@ export const calculatePeriodForWeek = (inputDate?: number): periodImp => {
   const periodEndDateTime = new Date(result.periodEnd)
   const accurateMonth = periodEndDateTime.getMonth()
   const accurateDate = periodEndDateTime.getDate()
-  result.displayValue = `No.${Math.ceil(accurateDate / 7)} Week ${MONTH_TRANS[accurateMonth]} `
+  result.displayValue = `No.${Math.ceil(accurateDate / 7)} Week ${
+    MONTH_TRANS[accurateMonth]
+  } `
   result.scheduleUnits = WEEK_TRANS
 
   return result

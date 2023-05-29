@@ -24,4 +24,12 @@ export const MONTH_TRANS = [
   'December',
 ]
 
-export const WEEK_TRANS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+export const WEEK_TRANS = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
+]

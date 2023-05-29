@@ -1,12 +1,32 @@
 <template>
   <div class="schedule-block">
-    <div class="schedule-unit" v-for=" in scheduleUnits" :style="{ width: scheduleUnit_width }"></div>
-    <svg-icon class="schedule_svg" v-for="scheduleItem in scheduleList" :key="scheduleItem.id" :name="scheduleItem.name"
-      :style="{ left: scheduleItem.leftRate }" width="18px" height="18px" :background="scheduleItem.color"
-      :toolTip='scheduleItem.toolTip'></svg-icon>
-    <svg-icon class="confirm_svg" v-for="(scheduleItem, index) in confirmList" :key="index" :name="scheduleItem.name"
-      :style="{ left: scheduleItem.leftRate }" width="18px" height="18px" :background="scheduleItem.color"
-      :toolTip='scheduleItem.toolTip'></svg-icon>
+    <div
+      class="schedule-unit"
+      v-for=" in scheduleUnits"
+      :style="{ width: scheduleUnit_width }"
+    ></div>
+    <svg-icon
+      class="schedule_svg"
+      v-for="scheduleItem in scheduleList"
+      :key="scheduleItem.id"
+      :name="scheduleItem.name"
+      :style="{ left: scheduleItem.leftRate }"
+      width="18px"
+      height="18px"
+      :background="scheduleItem.color"
+      :toolTip="scheduleItem.toolTip"
+    ></svg-icon>
+    <svg-icon
+      class="confirm_svg"
+      v-for="(scheduleItem, index) in confirmList"
+      :key="index"
+      :name="scheduleItem.name"
+      :style="{ left: scheduleItem.leftRate }"
+      width="18px"
+      height="18px"
+      :background="scheduleItem.color"
+      :toolTip="scheduleItem.toolTip"
+    ></svg-icon>
   </div>
 </template>
 
@@ -29,7 +49,7 @@ type item_type = {
   name: string
   isDone: boolean
   leftRate: string
-  color: string,
+  color: string
   toolTip: string
 }
 const scheduleList: Ref<Array<item_type>> = ref([])
@@ -43,7 +63,7 @@ const initData = (list: schedule[]) => {
       isDone: false,
       leftRate: '',
       color: 'lightgreen',
-      toolTip: ''
+      toolTip: '',
     }
     const newConfirmObj: item_type = {
       id: index,
@@ -51,7 +71,7 @@ const initData = (list: schedule[]) => {
       isDone: false,
       leftRate: '',
       color: '',
-      toolTip: ''
+      toolTip: '',
     }
     const scheduleTimestamp = new Date(item.scheduleTime).getTime()
     const confirmTimestamp = new Date(item.confirmedTime).getTime()
@@ -64,7 +84,11 @@ const initData = (list: schedule[]) => {
         totalWide
       ).toFixed(6)
       newScheduleObj.leftRate = `${parseFloat(rate) * 100}%`
-      const dataString = `${new Date(item.scheduleTime).toLocaleDateString()} ${new Date(item.scheduleTime).toLocaleTimeString()}`
+      const dataString = `${new Date(
+        item.scheduleTime,
+      ).toLocaleDateString()} ${new Date(
+        item.scheduleTime,
+      ).toLocaleTimeString()}`
       newScheduleObj.toolTip = dataString
       scheduleList.value.push(newScheduleObj)
     }
@@ -78,7 +102,11 @@ const initData = (list: schedule[]) => {
         totalWide
       ).toFixed(6)
       newConfirmObj.leftRate = `${parseFloat(rate) * 100}%`
-      const dataString = `${new Date(item.confirmedTime).toLocaleDateString()} ${new Date(item.confirmedTime).toLocaleTimeString()}`
+      const dataString = `${new Date(
+        item.confirmedTime,
+      ).toLocaleDateString()} ${new Date(
+        item.confirmedTime,
+      ).toLocaleTimeString()}`
       newConfirmObj.toolTip = dataString
       newConfirmObj.color = '#9370D8'
       confirmList.value.push(newConfirmObj)
@@ -105,7 +133,7 @@ initData(props.data as schedule[])
   display: flex;
   justify-content: space-between;
 
-  &>.schedule-unit {
+  & > .schedule-unit {
     height: 100%;
     border-right: $disable-background-color solid 1px;
     display: flex;
@@ -116,14 +144,14 @@ initData(props.data as schedule[])
       border-right: 0px;
     }
 
-    &>div {
+    & > div {
       width: 100%px;
       height: 40px;
       position: relative;
     }
   }
 
-  &>.schedule_svg {
+  & > .schedule_svg {
     position: absolute;
     top: 50px;
     width: 18px;
@@ -131,7 +159,7 @@ initData(props.data as schedule[])
     cursor: pointer;
   }
 
-  &>.confirm_svg {
+  & > .confirm_svg {
     position: absolute;
     top: 80px;
     width: 18px;
