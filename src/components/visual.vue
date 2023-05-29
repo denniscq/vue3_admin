@@ -32,13 +32,7 @@
     </div>
     <div class="line-3">
       <span>
-        <svg-icon
-          name="calculate"
-          color="lightgreen"
-          background="transparent"
-          width="18px"
-          height="18px"
-        ></svg-icon>
+        <svg-icon name="calculate" color="lightgreen" background="transparent" width="18px" height="18px"></svg-icon>
       </span>
       <span>{{ report.pending.people }}</span>
       <span>{{ report.pending.computer }}</span>
@@ -49,13 +43,8 @@
     </div>
     <div class="line-4">
       <span>
-        <svg-icon
-          name="correct"
-          color="rgba(128, 128, 128, 0.5)"
-          background="transparent"
-          width="18px"
-          height="18px"
-        ></svg-icon>
+        <svg-icon name="correct" color="rgba(128, 128, 128, 0.5)" background="transparent" width="18px"
+          height="18px"></svg-icon>
       </span>
       <span>{{ report.done.people }}</span>
       <span>{{ report.done.computer }}</span>
@@ -158,23 +147,23 @@ calculate(props.data as schedule[])
     height: 100%;
   }
 
-  & > .line-1 {
+  &>.line-1 {
     width: 100%;
     color: #000000;
     display: flex;
 
-    & > span:first-child {
+    &>span:first-child {
       font-weight: bold;
     }
   }
 
-  & > .line-2 {
+  &>.line-2 {
     color: blue;
     font-weight: bold;
     display: flex;
 
-    & > span {
-      & > pre {
+    &>span {
+      &>pre {
         width: 25px;
         border: 1px solid blue;
         border-radius: 50%;
@@ -184,12 +173,12 @@ calculate(props.data as schedule[])
     }
   }
 
-  & > .line-3 {
+  &>.line-3 {
     display: flex;
     height: 25px;
     color: lightgreen;
 
-    & > span:first-child {
+    &>span:first-child {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -197,11 +186,11 @@ calculate(props.data as schedule[])
     }
   }
 
-  & > .line-4 {
+  &>.line-4 {
     display: flex;
     height: 25px;
 
-    & > span:first-child {
+    &>span:first-child {
       display: flex;
       flex-direction: column;
       align-items: center;

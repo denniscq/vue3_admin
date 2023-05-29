@@ -1,23 +1,10 @@
 <template>
   <div class="search-block">
-    <svg-Icon
-      name="search"
-      color="blue"
-      background="#ffffff"
-      style="position: absolute"
-    ></svg-Icon>
-    <input
-      placeholder="Search HCP/HCO"
-      :value="selected"
-      @input="handleInput"
-      ref="inputSearch"
-    />
-    <div v-show="validHPCs.length">
-      <p
-        v-for="(item, index) in validHPCs"
-        :key="index"
-        @click="handleClick(item)"
-      >
+    <svg-Icon name="search" color="blue" background="#ffffff" style="position: absolute"></svg-Icon>
+    <input placeholder="Search HCP / HCO" :value="selected" @input="handleInput"
+      @focus='() => { isShow = validHPCs.length > 0 }' ref="inputSearch" />
+    <div v-show="isShow">
+      <p v-for="(item, index) in validHPCs" :key="index" @click="handleClick(item)">
         {{ item }}
       </p>
     </div>
@@ -25,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, onMounted } from 'vue'
 
 const props = defineProps({
   name: String,
@@ -35,28 +22,41 @@ const props = defineProps({
 const $emit = defineEmits(['transmit'])
 const inputSearch = ref({ value: '' })
 const validHPCs = ref(new Array())
+const isShow = ref(false)
 
 let timer: number
 const handleInput = () => {
+  debugger
   if (timer) {
     clearTimeout(timer)
   }
   timer = setTimeout(() => {
     nextTick(() => {
       if (props.HCPs) {
-        validHPCs.value = props.HCPs.filter(
+        validHPCs.value = inputSearch.value.value ? props.HCPs.filter(
           (p) => p.indexOf(inputSearch.value.value) > -1,
-        )
+        ) : []
+        isShow.value = validHPCs.value.length > 0
         $emit('transmit', props.name, inputSearch.value.value)
       }
     })
-  }, 500)
+  }, 800)
 }
 
 const handleClick = (value: string) => {
   validHPCs.value = []
+  isShow.value = validHPCs.value.length > 0
   $emit('transmit', props.name, value)
 }
+
+onMounted(() => {
+  window.addEventListener('click', (e) => {
+    const el = document.querySelector('.search-block') as any
+    if (!el.contains(e.target)) {
+      isShow.value = false
+    }
+  })
+})
 </script>
 
 <style scoped lang="scss">
@@ -67,14 +67,14 @@ const handleClick = (value: string) => {
   border-width: 0 0 1px 0;
   border-style: solid;
 
-  & > input {
+  &>input {
     border-width: 0;
     width: 330px;
     margin-left: 30px;
     line-height: 30px;
   }
 
-  & > div {
+  &>div {
     position: absolute;
     background-color: #ffffff;
     width: 100%;
@@ -82,7 +82,7 @@ const handleClick = (value: string) => {
     z-index: 1;
     border-radius: 5px;
 
-    & > p {
+    &>p {
       width: 100%;
       line-height: 30px;
       padding-left: 10px;

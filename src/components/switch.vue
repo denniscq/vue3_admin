@@ -34,11 +34,11 @@ const props = defineProps({
   },
   backgroundColor: {
     type: String,
-    default: '#DDA0DD',
+    default: '#E6E6FA',
   },
   borderColor: {
     type: String,
-    default: '#DA70D6',
+    default: '#9370D8',
   },
   tag: {
     type: Array,
@@ -85,7 +85,7 @@ const handleInput = () => {
     height: 28px;
     width: 28px;
     border-style: solid;
-    border-width: 1px;
+    border-width: 2px;
     border-radius: 50%;
     left: 0px;
   }

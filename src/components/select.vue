@@ -48,7 +48,7 @@ span {
 .isSelected {
   background-color: lightblue;
   color: blue;
-  border: 1px solid blue;
+  border: 2px solid blue;
   border-radius: 5px;
 }
 </style>
