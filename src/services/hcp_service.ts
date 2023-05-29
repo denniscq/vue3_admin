@@ -38,7 +38,6 @@ const getAll = async (): Promise<hcp[]> => {
  */
 const getByName = async (name: string, originalData: hcp[]): Promise<hcp[]> => {
   try {
-    debugger
     const hcps = originalData.length ? originalData : await getAll()
     const data = hcps.filter(
       (p) => p.name.toLowerCase().indexOf(name.toLowerCase()) > -1,
@@ -128,10 +127,10 @@ const getByRole = async (role: string, originalData: hcp[]): Promise<hcp[]> => {
 const getByDate = async (
   periodStart: number,
   periodEnd: number,
-  originalData: hcp[],
+  originalData?: hcp[],
 ): Promise<hcp[]> => {
   try {
-    const hcps = originalData.length ? originalData : await getAll()
+    const hcps = originalData && originalData.length ? originalData : await getAll()
 
     const data: hcp[] = []
     hcps.forEach((hcp) => {
@@ -188,7 +187,6 @@ const filter = async (
   periodEnd: number,
 ): Promise<hcp[]> => {
   let originalData: hcp[] = []
-  debugger
   for (const key of Object.keys(condition)) {
     switch (key) {
       case 'selectedDateType': {
@@ -197,12 +195,10 @@ const filter = async (
       }
       case 'selectedProduct': {
         originalData = await getByProduct(condition[key], originalData)
-        console.log('production')
         break
       }
       case 'selectedRoleType': {
         originalData = await getByRole(condition[key], originalData)
-        console.log('role')
         break
       }
       case 'selectedHCP': {
@@ -225,5 +221,6 @@ export default {
   getByProduct,
   getByPredicate,
   getByRole,
+  getByDate,
   filter,
 }

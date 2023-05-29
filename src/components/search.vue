@@ -44,7 +44,6 @@ const isShow = ref(false)
 
 let timer: number
 const handleInput = () => {
-  debugger
   if (timer) {
     clearTimeout(timer)
   }

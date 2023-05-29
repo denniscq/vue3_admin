@@ -1,30 +1,11 @@
 <template>
   <div>
     <div class="top-block margin-top-10">
-      <select-vue
-        name="selectedProduct"
-        :selected="selectedInfo.selectedProduct"
-        @transmit="handle"
-      ></select-vue>
-      <switch-vue
-        name="selectedRoleType"
-        :selected="selectedInfo.selectedRoleType"
-        @transmit="handle"
-      ></switch-vue>
-      <switch-vue
-        name="selectedDateType"
-        :tag="['Month', 'Week']"
-        backgroundColor="lightblue"
-        borderColor="blue"
-        :selected="selectedInfo.selectedDateType"
-        @transmit="handle"
-      ></switch-vue>
-      <search-vue
-        name="selectedHCP"
-        :selected="selectedInfo.selectedHCP"
-        :HCPs="hcps"
-        @transmit="handle"
-      ></search-vue>
+      <select-vue name="selectedProduct" :selected="selectedInfo.selectedProduct" @transmit="handle"></select-vue>
+      <switch-vue name="selectedRoleType" :selected="selectedInfo.selectedRoleType" @transmit="handle"></switch-vue>
+      <switch-vue name="selectedDateType" :tag="['Month', 'Week']" backgroundColor="lightblue" borderColor="blue"
+        :selected="selectedInfo.selectedDateType" @transmit="handle"></switch-vue>
+      <search-vue name="selectedHCP" :selected="selectedInfo.selectedHCP" :HCPs="hcps" @transmit="handle"></search-vue>
     </div>
     <div class="table-block margin-top-10">
       <table v-if="isRefresh">
@@ -40,76 +21,31 @@
               ACE Prioritization
               <!-- </div> -->
               <div class="up-logo" @click="sortHCP(isUp)">
-                <svg-icon
-                  name="down"
-                  color="blue"
-                  background="transparent"
-                  width="20px"
-                  height="20px"
-                  v-if="isUp"
-                ></svg-icon>
-                <svg-icon
-                  name="up"
-                  color="blue"
-                  background="transparent"
-                  width="20px"
-                  height="20px"
-                  v-else
-                ></svg-icon>
+                <svg-icon name="down" color="blue" background="transparent" width="20px" height="20px"
+                  v-if="isUp"></svg-icon>
+                <svg-icon name="up" color="blue" background="transparent" width="20px" height="20px" v-else></svg-icon>
               </div>
             </div>
           </td>
           <td>
             <div class="td-flex">
-              <div
-                class="left-logo"
-                style="left: 300px"
-                @click="go(false, dateForDisplay)"
-              >
-                <svg-icon
-                  name="left"
-                  color="blue"
-                  background="transparent"
-                  width="20px"
-                  height="20px"
-                ></svg-icon>
+              <div class="left-logo" style="left: 300px" @click="go(false, dateForDisplay)">
+                <svg-icon name="left" color="blue" background="transparent" width="20px" height="20px"></svg-icon>
               </div>
               {{ dateForDisplay }}
-              <div
-                class="right-logo"
-                style="right: 300px"
-                @click="go(true, dateForDisplay)"
-              >
-                <svg-icon
-                  name="right"
-                  color="blue"
-                  background="transparent"
-                  width="20px"
-                  height="20px"
-                ></svg-icon>
+              <div class="right-logo" style="right: 300px" @click="go(true, dateForDisplay)">
+                <svg-icon name="right" color="blue" background="transparent" width="20px" height="20px"></svg-icon>
               </div>
             </div>
           </td>
           <td>
             <div class="td-flex">
               <div class="left-logo" @click="go(false, dateForDisplay)">
-                <svg-icon
-                  name="left"
-                  color="blue"
-                  background="transparent"
-                  width="20px"
-                  height="20px"
-                ></svg-icon>
+                <svg-icon name="left" color="blue" background="transparent" width="20px" height="20px"></svg-icon>
               </div>
               {{ dateForDisplay }}
               <div class="right-logo" @click="go(true, dateForDisplay)">
-                <svg-icon
-                  name="right"
-                  color="blue"
-                  background="transparent"
-                  width="20px"
-                  height="20px"
-                ></svg-icon>
+                <svg-icon name="right" color="blue" background="transparent" width="20px" height="20px"></svg-icon>
               </div>
             </div>
           </td>
@@ -118,11 +54,7 @@
           <td></td>
           <td>
             <div class="schedule-block">
-              <span
-                v-for="unit in scheduleUnits"
-                class="schedule-unit"
-                :style="{ width: scheduleUnit_width }"
-              >
+              <span v-for="unit in scheduleUnits" class="schedule-unit" :style="{ width: scheduleUnit_width }">
                 {{ selectedInfo.selectedDateType === '0' ? 'Week' : 'Day' }}
                 {{ unit }}
               </span>
@@ -150,20 +82,11 @@
             <p>{{ item.hospitalName }}</p>
           </td>
           <td>
-            <schedule-vue
-              :data="item.scheduleList"
-              :periodStart="periodStart"
-              :periodEnd="periodEnd"
-              :scheduleUnits="scheduleUnits"
-              :scheduleUnit_width="scheduleUnit_width"
-            ></schedule-vue>
+            <schedule-vue :data="item.scheduleList" :periodStart="periodStart" :periodEnd="periodEnd"
+              :scheduleUnits="scheduleUnits" :scheduleUnit_width="scheduleUnit_width"></schedule-vue>
           </td>
           <td>
-            <visual-vue
-              :data="item.scheduleList"
-              :periodStart="periodStart"
-              :periodEnd="periodEnd"
-            ></visual-vue>
+            <visual-vue :data="item.scheduleList" :periodStart="periodStart" :periodEnd="periodEnd"></visual-vue>
           </td>
         </tr>
       </table>
@@ -172,22 +95,22 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onBeforeMount, Ref, nextTick } from 'vue'
 import selectVue from '@/components/select.vue'
 import searchVue from '@/components/search.vue'
 import switchVue from '@/components/switch.vue'
-import { ref, onMounted, onBeforeMount, Ref, nextTick } from 'vue'
-import hcpService from '@/services/hcp_service'
-import { hcp } from '@/models/hcp_model'
 import scheduleVue from '@/components/schedule.vue'
 import visualVue from '@/components/visual.vue'
+import hcpService from '@/services/hcp_service'
+import { switchWeekOrMonth, positiveOrder, negativeOrder } from '@/services/common_service'
+import { hcp } from '@/models/hcp_model'
 import { INIT_MODEL } from '@/models/init_model'
-import { switchWeekOrMonth } from '@/services/common_service'
 
 const data: Ref<hcp[]> = ref([])
 const isRefresh = ref(false)
 
 /**
- * @description top area logic
+ * @description filter feature logic
  */
 const selectedInfo = ref(INIT_MODEL)
 const periodStart = ref(0)
@@ -220,21 +143,17 @@ const handle = (key: keyof typeof INIT_MODEL, value: string) => {
  * @description main table logic
  */
 const dateForDisplay = ref('')
-const isUp = ref(false)
+const isUp = ref(true)
 const scheduleUnits: Ref<number[]> = ref([])
 const scheduleUnit_width = ref('')
 
+/**
+ * @description order sequence
+ * @param isToUp 
+ */
 const sortHCP = (isToUp: boolean) => {
+  data.value = !isToUp ? positiveOrder(data.value) : negativeOrder(data.value)
   isUp.value = !isToUp
-  data.value.sort((previous, next) => {
-    if (previous.priority === next.priority) {
-      if (previous.name > next.name) {
-        return 1
-      }
-    } else {
-      return previous.priority - next.priority
-    }
-  })
 }
 
 /**
@@ -242,30 +161,20 @@ const sortHCP = (isToUp: boolean) => {
  * @param isNext
  * @param value
  */
-const go = (isNext, value) => {}
-// const goPrevious = (value) => {
-//   const month = value.split(' ')[0]
-//   const year = value.split(' ')[1]
-//   if (month === 'January') {
-//     dateForDisplay.value = 'December' + (year - 1)
+const go = (isNext: boolean, value: string) => {
+  console.log('before moving the period is %s', value)
+  isRefresh.value = false
+  nextTick(async () => {
+    // +1|-1 is to ensure start time from 00:00:00
+    const nextPeriodStartTime = isNext ? periodEnd.value + 1 : periodStart.value - 1
+    switchWeekOrMonth(selectedInfo.value['selectedDateType'], resetDate, nextPeriodStartTime)
+    data.value = await hcpService.getByDate(periodStart.value, periodEnd.value)
 
-//     // 获取这个一个月的数据
-//   }
+    console.log('after moving the period is %s', dateForDisplay.value)
 
-//   const index = month_EN.findIndex((p) => p === month.split(''))
-// }
-
-// const goNext = (value) => {
-//   const month = value.split(' ')[0]
-//   const year = value.split(' ')[1]
-//   if (month === 'December') {
-//     dateForDisplay.value = 'January' + (year + 1)
-
-//     // 获取这个一个月的数据
-//   }
-
-//   const index = month_EN.findIndex((p) => p === month.split(''))
-// }
+    isRefresh.value = true
+  })
+}
 
 /**
  * @description reset for date model changed.
@@ -284,7 +193,6 @@ const resetDate = (result: { [key: string]: number & number[] }) => {
  */
 onMounted(() => {
   switchWeekOrMonth(INIT_MODEL.selectedDateType, resetDate)
-  sortHCP(false)
 
   isRefresh.value = true
 })
@@ -295,7 +203,7 @@ onMounted(() => {
 onBeforeMount(async () => {
   const result = await hcpService.getAll()
   if (result) {
-    data.value = result
+    data.value = positiveOrder(result)
     hcps.value = Array.from(result, ({ name }) => name)
   }
 })
@@ -310,9 +218,7 @@ onBeforeMount(async () => {
   display: flex;
   align-items: center;
   justify-content: space-around;
-}
 
-.top-block {
   div {
     &:first-child {
       background-color: $disable-background-color;
@@ -328,14 +234,14 @@ onBeforeMount(async () => {
   margin-left: 2%;
   // height: 600px;
 
-  & > table {
+  &>table {
     width: 100%;
     border-collapse: collapse;
     color: grey;
     font-size: 12px;
 
-    & > tr {
-      & > td {
+    &>tr {
+      &>td {
         border-right: 2px solid $disable-background-color;
         border-bottom: 2px solid $disable-background-color;
 
@@ -349,45 +255,45 @@ onBeforeMount(async () => {
       }
     }
 
-    & > .tr-title {
+    &>.tr-title {
       color: black;
       font-size: 18px;
       line-height: 40px;
       text-align: center;
     }
 
-    & > .tr-subtitle {
+    &>.tr-subtitle {
       color: blue;
       font-size: 14px;
       line-height: 30px;
       background-color: $normal-background-color;
       text-align: center;
 
-      & > td {
+      &>td {
         position: relative;
         border-bottom: 0px;
 
-        & > .td-flex {
+        &>.td-flex {
           display: flex;
           width: 100%;
           height: 100%;
           justify-content: center;
 
-          & > .up-logo {
+          &>.up-logo {
             right: 15px;
             top: 4px;
             position: absolute;
             cursor: pointer;
           }
 
-          & > .left-logo {
+          &>.left-logo {
             left: 70px;
             top: 4px;
             cursor: pointer;
             position: absolute;
           }
 
-          & > .right-logo {
+          &>.right-logo {
             right: 70px;
             top: 4px;
             cursor: pointer;
@@ -397,22 +303,22 @@ onBeforeMount(async () => {
       }
     }
 
-    & > .tr-celltitle {
+    &>.tr-celltitle {
       line-height: 40px;
       text-align: center;
       font-size: 12px;
 
-      & > td {
+      &>td {
         border-bottom: 0 !important;
         position: relative;
 
-        & > .logo-block {
+        &>.logo-block {
           position: absolute;
           width: 100%;
           height: 100%;
           display: flex;
 
-          & > span {
+          &>span {
             width: 40px;
             height: 100%;
             height: 100%;
@@ -421,7 +327,7 @@ onBeforeMount(async () => {
           }
         }
 
-        & > .schedule-block {
+        &>.schedule-block {
           display: flex;
           justify-content: space-between;
 
@@ -436,12 +342,12 @@ onBeforeMount(async () => {
       }
     }
 
-    & > .tr-row {
-      & > td {
+    &>.tr-row {
+      &>td {
         position: relative;
       }
 
-      & > td:first-child {
+      &>td:first-child {
         padding: 20px 10px;
         line-height: 25px;
 
