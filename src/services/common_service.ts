@@ -2,14 +2,14 @@
  * @description a series method to extract data.
  */
 import { hcp } from '@/models/hcp_model'
-import { MONTH_TRANS } from '../models/init_model'
+import { MONTH_TRANS, WEEK_TRANS } from '../models/init_model'
 
 const ONEDAY_TIMESTAMP: number = 24 * 60 * 60 * 1000
 const ONEWEEK_TIMESTAMP: number = 7 * ONEDAY_TIMESTAMP
 interface periodImp {
   periodStart: number
   periodEnd: number
-  scheduleUnits: number[]
+  scheduleUnits: string[]
   displayValue: string
 }
 
@@ -20,7 +20,7 @@ export const calculatePeriodForWeek = (inputDate?: number): periodImp => {
   const result: periodImp = {
     periodStart: 0,
     periodEnd: 0,
-    scheduleUnits: [1, 2, 3, 4, 5, 6, 7],
+    scheduleUnits: [],
     displayValue: '',
   }
 
@@ -33,17 +33,22 @@ export const calculatePeriodForWeek = (inputDate?: number): periodImp => {
   if (date >= dayInWeek) {
     result.periodStart =
       new Date(
-        basicDate.getFullYear(),
-        basicDate.getMonth(),
+        year,
+        month,
         date - dayInWeek,
       ).getTime() + ONEDAY_TIMESTAMP
   } else {
-    const lastMonthEndtime = new Date(year, basicDate.getMonth(), 0).getTime()
+    const lastMonthEndtime = new Date(year, basicDate.getMonth(), 0).getTime() + ONEDAY_TIMESTAMP
     result.periodStart =
       lastMonthEndtime - (dayInWeek - date) * ONEDAY_TIMESTAMP
   }
   result.periodEnd = result.periodStart + ONEWEEK_TIMESTAMP - 1
-  result.displayValue = `No.${Math.ceil(date / 7)} Week ${MONTH_TRANS[month]} `
+
+  const periodEndDateTime = new Date(result.periodEnd)
+  const accurateMonth = periodEndDateTime.getMonth()
+  const accurateDate = periodEndDateTime.getDate()
+  result.displayValue = `No.${Math.ceil(accurateDate / 7)} Week ${MONTH_TRANS[accurateMonth]} `
+  result.scheduleUnits = WEEK_TRANS
 
   return result
 }
@@ -64,11 +69,12 @@ export const calculatePeriodForMonth = (inputDate?: number): periodImp => {
   const year = basicDate.getFullYear()
   result.displayValue = `${MONTH_TRANS[month]} ${year}`
   result.periodStart = new Date(year, month, 1).getTime()
-  result.periodEnd = new Date(year, month + 1, 0).getTime() + ONEDAY_TIMESTAMP -1
+  result.periodEnd =
+    new Date(year, month + 1, 0).getTime() + ONEDAY_TIMESTAMP - 1
 
   const dayCount = new Date(year, month + 1, 0).getDate()
   for (let i = 1; i <= Math.ceil(dayCount / 7); i++) {
-    result.scheduleUnits.push(i)
+    result.scheduleUnits.push('Week ' + i)
   }
 
   return result
@@ -76,13 +82,19 @@ export const calculatePeriodForMonth = (inputDate?: number): periodImp => {
 
 /**
  * @switch from week to month|month to week
- * @param modelFlag 
- * @param callback 
- * @returns 
+ * @param modelFlag
+ * @param callback
+ * @returns
  */
-export const switchWeekOrMonth = (modelFlag: string, callback: Function, inputDate?: number) => {
+export const switchWeekOrMonth = (
+  modelFlag: string,
+  callback: Function,
+  inputDate?: number,
+) => {
   const result =
-    modelFlag === '1' ? calculatePeriodForWeek(inputDate) : calculatePeriodForMonth(inputDate)
+    modelFlag === '1'
+      ? calculatePeriodForWeek(inputDate)
+      : calculatePeriodForMonth(inputDate)
   return callback(result)
 }
 
@@ -107,7 +119,7 @@ export const positiveOrder = (dataSource: hcp[]): hcp[] => {
           if (char1 != char2) {
             let isToUp = char1 && !char2
 
-            if (isToUp || ((char1 && char2) && (char1 > char2))) {
+            if (isToUp || (char1 && char2 && char1 > char2)) {
               const tempObj = dataSource[j + 1]
               dataSource[j + 1] = dataSource[j]
               dataSource[j] = tempObj
@@ -127,8 +139,8 @@ export const positiveOrder = (dataSource: hcp[]): hcp[] => {
 
 /**
  * @description negative order direction
- * @param dataSource 
- * @returns 
+ * @param dataSource
+ * @returns
  */
 export const negativeOrder = (dataSource: hcp[]): hcp[] => {
   for (let i = 0; i < dataSource.length - 1; i++) {
@@ -146,7 +158,7 @@ export const negativeOrder = (dataSource: hcp[]): hcp[] => {
           if (char1 != char2) {
             let isToDown = !char1 && char2
 
-            if (isToDown || ((char1 && char2) && (char1 < char2))) {
+            if (isToDown || (char1 && char2 && char1 < char2)) {
               const tempObj = dataSource[j + 1]
               dataSource[j + 1] = dataSource[j]
               dataSource[j] = tempObj

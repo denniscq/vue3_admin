@@ -3,10 +3,10 @@
  */
 
 export const INIT_MODEL = {
+  selectedHCP: '',
   selectedProduct: '0',
   selectedRoleType: '1',
   selectedDateType: '0',
-  selectedHCP: '',
 }
 
 export const MONTH_TRANS = [
@@ -23,3 +23,5 @@ export const MONTH_TRANS = [
   'November',
   'December',
 ]
+
+export const WEEK_TRANS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']

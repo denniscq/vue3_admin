@@ -55,12 +55,8 @@
           <td>
             <div class="schedule-block">
               <span v-for="unit in scheduleUnits" class="schedule-unit" :style="{ width: scheduleUnit_width }">
-                {{ selectedInfo.selectedDateType === '0' ? 'Week' : 'Day' }}
                 {{ unit }}
               </span>
-              <!-- <span v-else v-for="unit in scheduleUnits" class="schedule-unit">
-                Day {{ unit }}
-              </span> -->
             </div>
           </td>
           <td>
@@ -90,19 +86,30 @@
           </td>
         </tr>
       </table>
+      <div v-show='timelinePosition.isShow' class='timeline'
+        :style="{ width: timelinePosition.width, height: timelinePosition.height }">
+        <p class='arror'></p>
+      </div>
+    </div>
+    <div v-show='!isRefresh' class='mask-block'>
+      <div class='loading'></div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeMount, Ref, nextTick } from 'vue'
+import { ref, onMounted, onBeforeMount, Ref, nextTick, watch } from 'vue'
 import selectVue from '@/components/select.vue'
 import searchVue from '@/components/search.vue'
 import switchVue from '@/components/switch.vue'
 import scheduleVue from '@/components/schedule.vue'
 import visualVue from '@/components/visual.vue'
 import hcpService from '@/services/hcp_service'
-import { switchWeekOrMonth, positiveOrder, negativeOrder } from '@/services/common_service'
+import {
+  switchWeekOrMonth,
+  positiveOrder,
+  negativeOrder,
+} from '@/services/common_service'
 import { hcp } from '@/models/hcp_model'
 import { INIT_MODEL } from '@/models/init_model'
 
@@ -116,14 +123,19 @@ const selectedInfo = ref(INIT_MODEL)
 const periodStart = ref(0)
 const periodEnd = ref(0)
 const hcps: Ref<string[]> = ref([])
+
+/**
+ * @description execute filter logic.
+ * @param key 
+ * @param value 
+ */
 const handle = (key: keyof typeof INIT_MODEL, value: string) => {
   if (selectedInfo.value[key] == value) {
     return
   }
   console.log(`hanle method running, key is ${key}, value is ${value}`)
   selectedInfo.value[key] = value
-  if (key === 'selectedHCP' && !value) return
-
+  
   isRefresh.value = false
   if (key === 'selectedDateType') {
     switchWeekOrMonth(value, resetDate)
@@ -144,12 +156,13 @@ const handle = (key: keyof typeof INIT_MODEL, value: string) => {
  */
 const dateForDisplay = ref('')
 const isUp = ref(true)
-const scheduleUnits: Ref<number[]> = ref([])
+const scheduleUnits: Ref<string[]> = ref([])
 const scheduleUnit_width = ref('')
+const timelinePosition = ref({ width: '', height: '', isShow: false })
 
 /**
  * @description order sequence
- * @param isToUp 
+ * @param isToUp
  */
 const sortHCP = (isToUp: boolean) => {
   data.value = !isToUp ? positiveOrder(data.value) : negativeOrder(data.value)
@@ -166,12 +179,18 @@ const go = (isNext: boolean, value: string) => {
   isRefresh.value = false
   nextTick(async () => {
     // +1|-1 is to ensure start time from 00:00:00
-    const nextPeriodStartTime = isNext ? periodEnd.value + 1 : periodStart.value - 1
-    switchWeekOrMonth(selectedInfo.value['selectedDateType'], resetDate, nextPeriodStartTime)
+    const nextPeriodStartTime = isNext
+      ? periodEnd.value + 1
+      : periodStart.value - 1
+    switchWeekOrMonth(
+      selectedInfo.value['selectedDateType'],
+      resetDate,
+      nextPeriodStartTime,
+    )
     data.value = await hcpService.getByDate(periodStart.value, periodEnd.value)
 
-    console.log('after moving the period is %s', dateForDisplay.value)
 
+    console.log('after moving the period is %s', dateForDisplay.value)
     isRefresh.value = true
   })
 }
@@ -180,7 +199,7 @@ const go = (isNext: boolean, value: string) => {
  * @description reset for date model changed.
  * @param result
  */
-const resetDate = (result: { [key: string]: number & number[] }) => {
+const resetDate = (result: { [key: string]: number & number[] & string[] }) => {
   periodStart.value = result.periodStart
   periodEnd.value = result.periodEnd
   scheduleUnits.value = result.scheduleUnits
@@ -205,6 +224,19 @@ onBeforeMount(async () => {
   if (result) {
     data.value = positiveOrder(result)
     hcps.value = Array.from(result, ({ name }) => name)
+  }
+})
+
+/**
+ * @description  caculate for timline position
+ */
+watch(data, (newValue) => {
+  const rate = ((new Date().getTime() - periodStart.value) / (periodEnd.value - periodStart.value))
+  const dynamicLeft = 745 * rate
+  timelinePosition.value = {
+    width: dynamicLeft + 'px',
+    height: (newValue.length * 117) + 'px',
+    isShow: rate > 0 && rate < 1
   }
 })
 </script>
@@ -232,7 +264,7 @@ onBeforeMount(async () => {
   background-color: #ffffff;
   width: 96%;
   margin-left: 2%;
-  // height: 600px;
+  position: absolute;
 
   &>table {
     width: 100%;
@@ -365,6 +397,61 @@ onBeforeMount(async () => {
         }
       }
     }
+  }
+
+  & .timeline {
+    border-right: 1.5px solid blue;
+    height: 10px;
+    position: absolute;
+    top: 110px;
+    left: 200px;
+    background-color: transparent;
+    z-index: 1;
+
+    & .arror {
+      width: 0;
+      height: 0;
+      border-top: 5px solid blue;
+      border-right: 5px dashed transparent;
+      border-left: 5px dashed transparent;
+      border-bottom: 5px dashed transparent;
+
+      position: absolute;
+      right: -5.5px;
+    }
+  }
+}
+
+.mask-block {
+  position: absolute;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+  filter: alpha(opacity=70);
+  opacity: 0.7;
+  z-index: 1001;
+
+  & .loading {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #000;
+    border-top-color: transparent;
+    border-radius: 100%;
+    animation: circle infinite 0.75s linear;
+    position: absolute;
+    top: 48%;
+    left: 48%;
+  }
+}
+
+@keyframes circle {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>
